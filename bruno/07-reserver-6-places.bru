@@ -1,0 +1,35 @@
+meta {
+  name: Réserver 6 places
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{reservationEventId}}/reservations
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "client@example.com",
+    "quantity": 6
+  }
+}
+
+script:post-response {
+  bru.setVar("reservationId", res.getBody().id);
+}
+
+tests {
+  test("réservation : 201, Location et prix standard", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getHeader("location")).to.include("/reservations/");
+    expect(res.getBody().quantity).to.equal(6);
+    expect(res.getBody().totalPrice).to.equal(120);
+  });
+}

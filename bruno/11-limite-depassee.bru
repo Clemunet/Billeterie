@@ -1,0 +1,29 @@
+meta {
+  name: Refuser plus de 6 places
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{reservationEventId}}/reservations
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "client@example.com",
+    "quantity": 7
+  }
+}
+
+tests {
+  test("limite par réservation : 400", function () {
+    expect(res.getStatus()).to.equal(400);
+    expect(res.getBody().message).to.be.a("string");
+  });
+}

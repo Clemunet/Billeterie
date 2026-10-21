@@ -1,0 +1,29 @@
+meta {
+  name: Refuser 5 places car il en reste 4
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{reservationEventId}}/reservations
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "autre@example.com",
+    "quantity": 5
+  }
+}
+
+tests {
+  test("places insuffisantes : 409", function () {
+    expect(res.getStatus()).to.equal(409);
+    expect(res.getBody().message).to.be.a("string");
+  });
+}

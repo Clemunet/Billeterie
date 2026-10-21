@@ -1,0 +1,17 @@
+meta {
+  name: Annuler la réservation
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/api/events/{{reservationEventId}}/reservations/{{reservationId}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("annulation : 204", function () {
+    expect(res.getStatus()).to.equal(204);
+  });
+}

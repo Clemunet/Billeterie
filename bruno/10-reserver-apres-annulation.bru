@@ -1,0 +1,29 @@
+meta {
+  name: Réserver après annulation
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{reservationEventId}}/reservations
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "nouveau@example.com",
+    "quantity": 6
+  }
+}
+
+tests {
+  test("places libérées : 201", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getBody().quantity).to.equal(6);
+  });
+}

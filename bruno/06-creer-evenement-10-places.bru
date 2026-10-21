@@ -1,0 +1,40 @@
+meta {
+  name: Créer un événement de 10 places
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Concert réservations",
+    "date": "{{reservationEventDate}}",
+    "capacity": 10,
+    "basePrice": 20.00
+  }
+}
+
+script:pre-request {
+  const future = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000);
+  bru.setVar("reservationEventDate", future.toISOString().slice(0, 19));
+}
+
+script:post-response {
+  bru.setVar("reservationEventId", res.getBody().id);
+}
+
+tests {
+  test("événement de 10 places créé", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getBody().availablePlaces).to.equal(10);
+  });
+}
