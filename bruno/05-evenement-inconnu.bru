@@ -1,0 +1,18 @@
+meta {
+  name: Événement inconnu
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/events/999999
+  body: none
+  auth: none
+}
+
+tests {
+  test("événement inconnu : 404 lisible", function () {
+    expect(res.getStatus()).to.equal(404);
+    expect(res.getBody().message).to.include("Événement introuvable");
+  });
+}

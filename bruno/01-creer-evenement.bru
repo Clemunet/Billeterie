@@ -1,0 +1,41 @@
+meta {
+  name: Créer un événement
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Concert Bruno",
+    "date": "{{eventDate}}",
+    "capacity": 50,
+    "basePrice": 25.00
+  }
+}
+
+script:pre-request {
+  const future = new Date(Date.now() + 45 * 24 * 60 * 60 * 1000);
+  bru.setVar("eventDate", future.toISOString().slice(0, 19));
+}
+
+script:post-response {
+  bru.setVar("eventId", res.getBody().id);
+}
+
+tests {
+  test("création : 201 et Location", function () {
+    expect(res.getStatus()).to.equal(201);
+    expect(res.getHeader("location")).to.include("/api/events/");
+    expect(res.getBody().availablePlaces).to.equal(50);
+  });
+}

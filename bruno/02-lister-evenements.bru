@@ -1,0 +1,19 @@
+meta {
+  name: Lister les événements à venir
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/events
+  body: none
+  auth: none
+}
+
+tests {
+  test("liste : 200 et événement créé", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody()).to.be.an("array");
+    expect(res.getBody().some(event => event.id === Number(bru.getVar("eventId")))).to.equal(true);
+  });
+}

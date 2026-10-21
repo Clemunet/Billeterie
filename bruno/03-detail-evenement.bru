@@ -1,0 +1,19 @@
+meta {
+  name: Consulter un événement
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/events/{{eventId}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("détail : 200 et places disponibles", function () {
+    expect(res.getStatus()).to.equal(200);
+    expect(res.getBody().id).to.equal(Number(bru.getVar("eventId")));
+    expect(res.getBody().availablePlaces).to.equal(50);
+  });
+}
