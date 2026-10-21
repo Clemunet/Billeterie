@@ -15,7 +15,7 @@ public record EventResponse(
 
     public static EventResponse from(Event event) {
         return new EventResponse(
-                event.id(), event.name(), event.date(), event.capacity(),
-                event.basePrice(), event.availablePlaces());
+                event.getId(), event.getName(), event.getDate(), event.getCapacity(),
+                event.getBasePrice(), event.availablePlaces());
     }
 }

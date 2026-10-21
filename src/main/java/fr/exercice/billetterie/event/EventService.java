@@ -2,7 +2,6 @@ package fr.exercice.billetterie.event;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +15,11 @@ public class EventService {
     }
 
     public Event create(String name, LocalDateTime date, int capacity, BigDecimal basePrice) {
-        return repository.save(new Event(null, name, date, capacity, basePrice));
+        return repository.save(new Event(name, date, capacity, basePrice));
     }
 
     public List<Event> listUpcoming() {
-        LocalDateTime now = LocalDateTime.now();
-        return repository.findAll().stream()
-                .filter(event -> event.date().isAfter(now))
-                .sorted(Comparator.comparing(Event::date))
-                .toList();
+        return repository.findByDateAfterOrderByDateAsc(LocalDateTime.now());
     }
 
     public Event getById(Long id) {

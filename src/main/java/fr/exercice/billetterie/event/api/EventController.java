@@ -27,7 +27,7 @@ public class EventController {
     public ResponseEntity<EventResponse> create(@Valid @RequestBody CreateEventRequest request) {
         Event event = service.create(
                 request.name(), request.date(), request.capacity(), request.basePrice());
-        return ResponseEntity.created(URI.create("/api/events/" + event.id()))
+        return ResponseEntity.created(URI.create("/api/events/" + event.getId()))
                 .body(EventResponse.from(event));
     }
 
